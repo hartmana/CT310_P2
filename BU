@@ -1,0 +1,17 @@
+$result = $dbh->query('SELECT * FROM users');
+
+echo '<br>';
+
+foreach($result as $row) {
+
+	echo "ID: " . $row['id'] . "<br>";
+	echo "User: " . $row['username'] . "<br>";
+	echo "First: " . $row['firstName'] . "<br>";
+	echo "Last: " . $row['lastName'] . "<br>";
+	echo "Password: " . $row['password'] . "<br>";
+	echo "Gender: " . $row['gender'] . "<br>";
+	echo "E-mail: " . $row['email'] . "<br>";
+	echo "Phone: " . $row['phoneNumber'] . "<br>";
+	echo "Pass Question ID: " . $row['questionID'] . "<br>";
+	echo "Pass Question: " . $row['questionAnswer'] . "<br>";
+}
