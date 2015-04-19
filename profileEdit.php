@@ -76,7 +76,7 @@ else
 }
 ?>
 	<form action="upload.php" method="post" enctype="multipart/form-data">
-		<input type="hidden" value = "<?php echo $profile->id; ?>" name = "id">
+		<input type="hidden" value = "<?php echo $user->id; ?>" name = "id">
 		Select image to upload:
 		<input type="file" name="fileToUpload" id="fileToUpload">
 		<input type="submit" value="Upload Image" name="submit">
@@ -84,14 +84,10 @@ else
 
 
 	<?php
-
-
-if (isset($_SESSION["PicErrors"]))
-{
-	echo '<h3 style= color:red >' . $_SESSION["PicErrors"] . '</h3>';
-	unset($_SESSION["PicErrors"]);
-
-}
+	if (isset($_SESSION["PicErrors"])) {
+		echo '<h3 style= color:red >' . $_SESSION["PicErrors"] . '</h3>';
+		unset($_SESSION["PicErrors"]);
+	}
 ?>
 
 	</div>

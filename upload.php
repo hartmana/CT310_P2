@@ -1,9 +1,11 @@
 <?php
+include_once("lib/user.php");
 session_start();
 $target_dir = "assets/img/";
 $target_file = $target_dir . basename("profile" . $_POST["id"] . ".jpg");
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+$user=$_SESSION['user'];
 
 // Check if image file is a actual image or fake image
 if (isset($_POST["submit"]))
@@ -37,7 +39,8 @@ if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpe
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0)
 {
-	header('Location: profile.php?user=' . $_POST["id"]);
+		header('Location: profileEdit.php?user=' . $user->username);
+
 // if everything is ok, try to upload file
 }
 else
@@ -47,9 +50,6 @@ else
 	{
 		header('Location: profile.php?user=' . $_POST["id"]);
 	}
-	else
-	{
-		header('Location: profile.php?user=' . $_POST["id"]);
-	}
+
 }
 ?> 

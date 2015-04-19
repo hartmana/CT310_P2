@@ -43,7 +43,7 @@ $util = new util();
 
 	<hr/>
 	<?php
-	if ($util->isIpValid() && $user && ($user->id == $profile->id))
+	if ( /* $util->isIpValid() && */ $user && ($user->id == $profile->id))
 	{
 		echo '<p><a href="profileEdit.php?user=' . $profile->username . '">Edit Profile Information</a></p>';
 	}
