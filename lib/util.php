@@ -247,10 +247,8 @@ class util
 
 		$insertUsersChallenge = "INSERT INTO questions(questionID, question, questionAnswer) VALUES(?, ?, ?)";
 
-		$deleteUser = "DELETE FROM users WHERE id=?";
-
-
 		$dbh = self::connectDB();
+
 
 		// Start the transaction
 		if($dbh->beginTransaction())
