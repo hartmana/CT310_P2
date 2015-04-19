@@ -252,120 +252,17 @@ class util
 
 		$dbh = self::connectDB();
 
-
-		try
+		// Start the transaction
+		if($dbh->beginTransaction())
 		{
-
-			/**
-			 * First check for existing user
-			 */
-			$statement = $dbh->prepare($checkForExisting);
-
-			// IF statement couldn't be prepared
-			if (!$statement)
-			{
-				return false;
-			}
-
-			$statement->execute(array($userName));
-
-			// IF statement couldn't be executed
-			if (!$statement)
-			{
-				return false;
-			}
-
-			$result = $statement->fetch(PDO::FETCH_ASSOC);
-
-			// IF user already exists
-			if ($result)
-			{
-				return "User already exists!";
-			}
-
-
-			/**
-			 * By this point, the user does not exist and we can create it
-			 */
-			$statement = $dbh->prepare($insertNewUser);
-
-			// IF statement couldn't be prepared
-			if (!$statement)
-			{
-				return false;
-			}
-
-			$statement->execute(array($userName, $firstName, $lastName, $password));
-
-			// IF statement couldn't be executed
-			if (!$statement)
-			{
-				return false;
-			}
-
-//			$result = $statement->fetch(PDO::FETCH_ASSOC);
-
-
-			/**
-			 * The user has been created, get the users ID
-			 */
-			$statement = $dbh->prepare($selectUsersID);
-
-			// IF statement couldn't be prepared
-			if (!$statement)
-			{
-				return false;
-			}
-
-			$statement->execute(array($userName));
-
-			// IF statement couldn't be executed
-			if (!$statement)
-			{
-				return false;
-			}
-
-			$result = $statement->fetch(PDO::FETCH_ASSOC);
-
-			// IF there was an error getting the new user's ID (somehow)
-			if (!$result)
-			{
-				return false;
-			}
-
-
-			$insertedUserID = $result['id'];
-
-
-			/**
-			 * Add the user's challenge question/answer
-			 */
-			$statement = $dbh->prepare($insertUsersChallenge);
-
-			// IF statement couldn't be prepared
-			if (!$statement)
-			{
-				return false;
-			}
-
-			$statement->execute(array($insertedUserID, $secret_question, $challengeAnswer));
-
-			// IF statement couldn't be executed
-			if (!$statement)
-			{
-				return false;
-			}
-
-			$result = $statement->fetch(PDO::FETCH_ASSOC);
-
-
-			/**
-			 * If the user's challenge question couldn't be inserted, we can't add the user
-			 */
-			if ($result)
+			try
 			{
 
-				$statement = $dbh->prepare($deleteUser);
+
+				/**
+				 * First check for existing user
+				 */
+				$statement = $dbh->prepare($checkForExisting);
 
 				// IF statement couldn't be prepared
 				if (!$statement)
@@ -373,7 +270,7 @@ class util
 					return false;
 				}
 
-				$statement->execute(array($insertedUserID));
+				$statement->execute(array($userName));
 
 				// IF statement couldn't be executed
 				if (!$statement)
@@ -383,23 +280,101 @@ class util
 
 				$result = $statement->fetch(PDO::FETCH_ASSOC);
 
-				// IF user wasn't deleted
-				if (!$result)
+				// IF user already exists
+				if ($result)
 				{
-					return "Error creating user. Unfortunately you won't be able to use that name again.";
+					return "User already exists!";
 				}
 
+
+				/**
+				 * By this point, the user does not exist and we can create it
+				 */
+				$statement = $dbh->prepare($insertNewUser);
+
+				// IF statement couldn't be prepared
+				if (!$statement)
+				{
+					return false;
+				}
+
+				$statement->execute(array($userName, $firstName, $lastName, $password));
+
+				// IF statement couldn't be executed
+				if (!$statement)
+				{
+					$dbh->rollBack();
+					return false;
+				}
+
+
+				/**
+				 * The user has been created, get the users ID
+				 */
+				$statement = $dbh->prepare($selectUsersID);
+
+				// IF statement couldn't be prepared
+				if (!$statement)
+				{
+					$dbh->rollBack();
+					return false;
+				}
+
+				$statement->execute(array($userName));
+
+				// IF statement couldn't be executed
+				if (!$statement)
+				{
+					$dbh->rollBack();
+					return false;
+				}
+
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+				// IF there was an error getting the new user's ID (somehow)
+				if (!$result)
+				{
+					$dbh->rollBack();
+					return false;
+				}
+
+
+				$insertedUserID = $result['id'];
+
+
+				/**
+				 * Add the user's challenge question/answer
+				 */
+				$statement = $dbh->prepare($insertUsersChallenge);
+
+				// IF statement couldn't be prepared
+				if (!$statement)
+				{
+					$dbh->rollBack();
+					return false;
+				}
+
+				$statement->execute(array($insertedUserID, $secret_question, $challengeAnswer));
+
+				// IF statement couldn't be executed
+				if (!$statement)
+				{
+					$dbh->rollBack();
+					return false;
+				}
+
+
+				// user successfully created
+				$dbh->commit();
+
+				return true;
+
+
 			}
-
-
-			// user successfully created
-			return true;
-
-
-		}
-		catch (PDOException $pdoE)
-		{
-			return "Failed adding user: " . $pdoE->getMessage();
+			catch (PDOException $pdoE)
+			{
+				return "Failed adding user: " . $pdoE->getMessage();
+			}
 		}
 	}
 }
