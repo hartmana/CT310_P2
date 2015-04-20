@@ -254,24 +254,27 @@ class util
         return false;
     }
 
+
     /**
      * Function to remove friend request
      *
      */
     public function removeFriendRequest($userID, $friendID, $dbh)
     {
-        $sql = "DELETE FROM pendFriends WHERE userId='$friendID' AND pendFriendID='$userID'";
+        $sql = "DELETE FROM pendFriends WHERE userId=? AND pendFriendID=?";
 
         try
         {
 
-            $query = $dbh->query($sql);
-            $result = $query->fetch(PDO::FETCH_ASSOC);
+            $statement = $dbh->prepare($sql);
+
+            $res = $statement->execute(array($friendID, $userID));
+
 
             return true;
         } catch (PDOException $pdoE)
         {
-            echo "Failed requesting friend! " . $pdoE->getMessage();
+            echo "Failed removing friend request. " . $pdoE->getMessage();
         }
 
         return false;

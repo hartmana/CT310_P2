@@ -55,7 +55,6 @@
 	echo '<h2>Friend Requests</h2>';
 
 	// Get users pending friend requests
-	//	SELECT U.id,U.firstName FROM users U JOIN pendFriends P WHERE P.pendFriendID=2 AND U.id=P.userID;
 	$sql = "SELECT U.id,U.firstName FROM users U JOIN pendFriends P WHERE P.pendFriendID=" . $user->id . " AND U.id=P.userID";
 
 	try

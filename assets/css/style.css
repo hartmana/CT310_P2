@@ -142,7 +142,8 @@ hr {
 }
 
 .leftContent div#profileInfo {
-    float: left;
+    clear: both;
+    display: block;
 }
 
 .profile-thumb:hover > a > span {
@@ -333,11 +334,13 @@ div.friendMod a {
 
 div.profFriendStatus {
     font-size: 10pt;
+    color: #FFFFFF;
     text-decoration: none;
 }
 
 div.profFriendStatus a {
     font-size: 10pt;
+    color: #E6B800;
     text-decoration: none;
 }
 
@@ -345,6 +348,13 @@ div.profFriendStatus a:hover {
     text-decoration: none;
     color: #FFFFFF;
 }
+
+div.profFriendStatus a:visited {
+    text-decoration: none;
+    /*color: #FFFFFF;*/
+}
+
+
 
 
 

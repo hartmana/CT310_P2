@@ -45,25 +45,25 @@ session_start();
 			echo '<li><a href="index.php">HOME</a></li>
 					<li><a href="search.php?user=leonardovolpatto">SEARCH PAGE</a></li>';
 
-			if (isset($_SESSION['secondaryAuth']))
-			{
-				echo '<li><a href="logout.php">LOG OUT</a></li>';
-			}
-			else
-			{
-				echo '<li><a href="login.php">LOGIN</a></li>';
-			}
-			if (isset($_SESSION['secondaryAuth']))
-			{
-				echo '<li><a href=profile.php?user=' . $_SESSION['user']->id . '>YOUR PAGE</a></li>';
-			}
-			if (isset($_SESSION['admin']))
-			{
-				if ($_SESSION['admin'] == true)
-				{
-					echo '<li><a href="Admin.php">ADMIN PAGE</a></li>';
-				}
-			}
+                if (isset($_SESSION['secondaryAuth']))
+                {
+                    echo '<li><a href="logout.php">LOG OUT</a></li>';
+                }
+                else
+                {
+                    echo '<li><a href="login.php">LOGIN</a></li>';
+                }
+                if (isset($_SESSION['secondaryAuth']))
+                {
+                    echo '<li><a href=profile.php?user=' . $_SESSION['user']->id . '>YOUR PAGE</a></li>';
+                }
+                if (isset($_SESSION['admin']))
+                {
+                    if ($_SESSION['admin'] == true)
+                    {
+                        echo '<li><a href="Admin.php">ADMIN PAGE</a></li>';
+                    }
+                }
 			?>
 		</ul>
 	</nav>
