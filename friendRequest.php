@@ -38,7 +38,7 @@ else if (is_string($rVal))
 }
 else
 {
-	echo 'Sorry, friend could not be added!';
+	echo 'Sorry, friend could not be requested!';
 }
 
 echo '<a href="profile.php?user=' . $user->id . '" >Go back</a>

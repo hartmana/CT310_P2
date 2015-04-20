@@ -31,7 +31,12 @@
 
 		if ($user)
 		{
-			echo '<div class="friendMod">' . $nameArray['firstName'] . '&nbsp;&nbsp;&nbsp;<a href="friendRequest.php?user=' . $user->id . '&friend=' . $id . '">Add</a></div>';
+			echo '<div class="friendMod">' . $nameArray['firstName'];
+
+            if(!$util->isFriend($user->id, $id, $dbh))
+            {
+                echo '&nbsp;&nbsp;&nbsp;<a href="friendRequest.php?user=' . $user->id . '&friend=' . $id . '">Add</a>';
+            }
 		}
 
 		echo '</div>';

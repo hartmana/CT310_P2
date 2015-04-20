@@ -11,63 +11,87 @@ $sql = "SELECT * FROM users WHERE id = \"$_GET[user]\"";
 $query = $dbh->query($sql);
 $queryArray = $query->fetch(PDO::FETCH_ASSOC);
 $profile = new user($queryArray['id'], $queryArray['username'], $queryArray['firstName'],
-	$queryArray['lastName'], $queryArray['password'], $queryArray['gender'],
-	$queryArray['email'], $queryArray['phoneNumber'], $queryArray['accessLevel'], $queryArray['profileDescription']);
+    $queryArray['lastName'], $queryArray['password'], $queryArray['gender'],
+    $queryArray['email'], $queryArray['phoneNumber'], $queryArray['accessLevel'], $queryArray['profileDescription']);
 
 
 if (isset($_SESSION['user']))
 {
-	$user = $_SESSION['user'];
+    $user = $_SESSION['user'];
 }
 $util = new util();
 
 ?>
 
 <div class="leftContent">
-	<?php
-	//print_r($userName);
+    <?php
+    //print_r($userName);
 
-	echo '<hr>
+    echo '<hr>
 			<h2>' . $profile->firstName . ' ' . $profile->lastName . '</h2>';
 
-	echo '<img class="profile-pic" src="assets/img/profile' . $profile->id . '.jpg" alt="' . $profile->firstName . '\'s image profile">';
+
+    // IF the user is logged in and not viewing their own page
+    if ($user && $user->id != $profile->id)
+    {
+        // IF the two users are friends
+        if ($util->isFriend($user->id, $profile->id, $dbh))
+        {
+                echo '<div class="profFriendStatus"><h3>Friends</h3> <a href="deleteFriend.php?user=' . $user->id . '&friend=' . $profile->id . '">Remove</a></div>';
+        }
+        // ELSE IF there is a pending friend request from that user
+        else if($util->isPendFriend($profile->id, $user->id, $dbh))
+        {
+                echo '<div class="profFriendStatus"><h3>Pending Friend Request</h3> <a href="addFriend.php.php?user=' . $user->id . '&friend=' . $profile->id . '">Accept</a></div>';
+        }
+        // ELSE they are not friends
+        else
+        {
+                echo '<div class="profFriendStatus"><h3><a href="friendRequest.php?user=' . $user->id . '&friend=' . $profile->id . '">Request Friend</a></h3></div>';
+        }
+
+    }
 
 
-	echo '<p>' . $profile->profileDescription . '</p>';
+    echo '<img class="profile-pic" src="assets/img/profile' . $profile->id . '.jpg" alt="' . $profile->firstName . '\'s image profile">';
+
+
+    echo '<p>' . $profile->profileDescription . '</p>';
 
 
 
 
 
-	?>
+    ?>
 
-	<hr/>
-	<?php
-	if ( /* $util->isIpValid() && */ $user && ($user->id == $profile->id))
-	{
-		echo '<p><a href="profileEdit.php?user=' . $profile->username . '">Edit Profile Information</a></p>';
-	}
-	if (isset($_SESSION['login']) && isset($_SESSION['securityCheck']))
-	{
-		echo '<div id="profileInfo">
+    <hr/>
+    <?php
+    if ( /* $util->isIpValid() && */
+        $user && ($user->id == $profile->id)
+    )
+    {
+        echo '<p><a href="profileEdit.php?user=' . $profile->username . '">Edit Profile Information</a></p>';
+    }
+    if (isset($_SESSION['login']) && isset($_SESSION['securityCheck']))
+    {
+        echo '<div id="profileInfo">
 					<h3>Contact Info</h3>
 					<p>Email: ' . $profile->email . '</p>
 					<p>Phone Number: ' . $profile->phoneNumber . '</p>
 				</div>';
-	}
-	echo '</div>';
+    }
+    echo '</div>';
 
-	if (isset($_SESSION['user']))
-	{
-		include_once("inc/rightFriendsContent.php");
-	}
-	else
-	{
+    if (isset($_SESSION['user']))
+    {
+        include_once("inc/rightFriendsContent.php");
+    } else
+    {
 
-		include_once("inc/rightContent.php");
-	}
-	?>
+        include_once("inc/rightContent.php");
+    }
+    ?>
 
-	<?php
-	include("inc/footer.php")
-	?>
+    <?php
+    include("inc/footer.php")
+    ?>

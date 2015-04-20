@@ -6,22 +6,20 @@ include("inc/header.php");
 include("lib/files.php");
 ?>
 	<div class="leftContent">
-		<h2>Userlist</h2>
+		<h2>FriendSpace Users</h2>
 		<hr/>
 
 		<div id="search-list">
-			<p>Users registered</p>
-
 			<?php
 			$dbh = Util::connectDB();
 			$sql = "SELECT id FROM users";
 			$query = $dbh->query($sql);
 			$queryArray = $query->fetchAll(PDO::FETCH_COLUMN);
 
-			echo '<div class="user-list">';
+//			echo '<div class="user-list">';
 			foreach ($queryArray as $id)
 			{
-				echo '<div class="profile-thumb">
+				echo '<div class="userList">
 									<a href="profile.php?user=' . $id . '">
 										<img src="assets/img/profile' . $id . '.jpg" alt="profile"/>';
 
@@ -29,14 +27,12 @@ include("lib/files.php");
 				$query = $dbh->query($sql);
 				$nameArray = $query->fetch(PDO::FETCH_ASSOC);
 
-				echo '<span>' . $nameArray['firstName'] . '</span>
-									</a>
-							</div>';
+				echo '<br>' . $nameArray['firstName'] . '</a></div>';
 
 				//if ($i == 3) break; // Just 2 profiles per page
 			}
 
-			echo '</div>';
+//			echo '</div>';
 
 			?>
 		</div>

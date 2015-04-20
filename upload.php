@@ -1,9 +1,11 @@
 <?php
 include_once("lib/user.php");
+
 session_start();
+
 $target_dir = "assets/img/";
 $target_file = $target_dir . basename("profile" . $_POST["id"] . ".jpg");
-$uploadOk = 1;
+$uploadOk = true;
 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 $user=$_SESSION['user'];
 
@@ -11,11 +13,7 @@ $user=$_SESSION['user'];
 if (isset($_POST["submit"]))
 {
 	$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-	if ($check !== false)
-	{
-		$uploadOk = 1;
-	}
-	else
+	if ($check == false)
 	{
 		$_SESSION["PicErrors"] = "File is not an image.";
 		$uploadOk = 0;
@@ -34,10 +32,10 @@ if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpe
 )
 {
 	$_SESSION["PicErrors"] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-	$uploadOk = 0;
+	$uploadOk = false;
 }
 // Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0)
+if (!$uploadOk)
 {
 		header('Location: profileEdit.php?user=' . $user->username);
 
@@ -45,6 +43,12 @@ if ($uploadOk == 0)
 }
 else
 {
+    // IF the user already has an image, we need to remove it
+    if(file_exists($target_file))
+    {
+        unlink($target_file);
+        echo 'File removed';
+    }
 
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file))
 	{

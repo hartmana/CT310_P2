@@ -9,9 +9,9 @@
 }
 
 #page-logo #link-to-home {
-    border: 4px solid #A37547;
+    border: 2px solid #A37547;
     color: #E6B800;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 20px;
     background: #323A50;
     width: 350px;
@@ -172,13 +172,13 @@ hr {
 
 .rightContent {
 
-    border: 4px solid #A37547;
-    border-radius: 80px;
+    border: 2px solid #A37547;
+    border-radius: 15px;
     width: 10px;
 
     background: #323A50;
     float: right;
-    width: 20%;
+    width: 15%;
     height: 60vh;
     /*padding: 2%;*/
     overflow-y: auto;
@@ -329,4 +329,56 @@ div.friendMod {
 div.friendMod a {
     text-decoration: none;
     display: inline-block;
+}
+
+div.profFriendStatus {
+    font-size: 10pt;
+    text-decoration: none;
+}
+
+div.profFriendStatus a {
+    font-size: 10pt;
+    text-decoration: none;
+}
+
+div.profFriendStatus a:hover {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+
+
+div.friendMod a {
+    text-decoration: none;
+    display: inline-block;
+}
+
+div.userList {
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+}
+
+div.userList a {
+    text-decoration: none;
+}
+
+div.userList a:hover {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+div.userList img {
+    width: 75px;
+    height: 75px;
+    margin: auto;
+
+}
+
+div.userList span {
+
+    float: inherit;
+    display: inline-block;
+    font-size: 13pt;
+    font-family: Arial, sans-serif;
 }
