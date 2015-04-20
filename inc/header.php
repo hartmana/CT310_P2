@@ -27,6 +27,15 @@ session_start();
 				<h1>Friend Space<br/></h1>
 
 				<h2><?php echo $title; ?></h2>
+                <p>
+                    <?php
+
+                        if(isset($_SESSION['secondaryAuth']) && $_SESSION['secondaryAuth'] == true)
+                        {
+                            echo $_SESSION['user']->firstName . ' ' . $_SESSION['user']->lastName;
+                        }
+                    ?>
+                </p>
 			</div>
 		</a>
 	</div>
